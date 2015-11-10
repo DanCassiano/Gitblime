@@ -7,7 +7,8 @@ class GitblimeCommand(sublime_plugin.TextCommand):
 	r = None
 
 	def run(self, edit):			
-		self.showPainel( self.gitStatus() );
+		# self.showPainel( self.gitLogBunito() );
+		print( self.getTotalCommit() )
 		# print(self.gitStatus())
 
 	def showPainel( self, dados ):
@@ -23,3 +24,12 @@ class GitblimeCommand(sublime_plugin.TextCommand):
 	def gitStatus(self):
 		self.r = subprocess.check_output(["git", "status", "-s"], stderr=subprocess.STDOUT)
 		return str(self.r, encoding='utf8')
+
+	def gitLogBunito(self):
+		self.r = subprocess.check_output(["git","log", '--pretty=format:commit=%H,commithash=%h,autor=%an,datarelativa=%ar,autordata=%at,autoremail=%ae,commitername=%cn,msg=%s+'])
+		return str(self.r, encoding='utf8')
+
+	def getTotalCommit(self):		
+		self.r = subprocess.check_output(["git", "log", "--pretty=format:'commit=%H;"])
+		retorno = str(self.r, encoding='utf8').split(';')
+		return len(retorno)
